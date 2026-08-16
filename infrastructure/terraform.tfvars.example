@@ -1,0 +1,6 @@
+aws_region           = "eu-west-1"
+environment          = "dev"
+jwt_secret           = "CAMBIAR-POR-UN-SECRETO-SEGURO"
+otp_ttl_seconds      = 120
+similarity_threshold = 0.6
+ses_sender_email     = "noreply@test.com"

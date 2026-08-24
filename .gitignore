@@ -45,6 +45,7 @@ Thumbs.db
 
 # Terraform
 infrastructure/.terraform/
+infrastructure/.terraform.*
 infrastructure/*.tfstate
 infrastructure/*.tfstate.backup
 *.tfvars
@@ -52,3 +53,6 @@ infrastructure/*.tfstate.backup
 
 # Lambda build artifacts
 backend/dist/
+
+# IDE
+.vscode

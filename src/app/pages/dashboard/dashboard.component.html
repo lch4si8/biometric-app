@@ -1,0 +1,160 @@
+<div class="dashboard-page">
+  <!-- Top Bar / Navigation -->
+  <header class="top-nav">
+    <div class="user-greeting">
+      <h1>Hola, <span class="accent-name">{{ userName() }}</span></h1>
+      <p class="greeting-subtitle">Aquí está el resumen de tus finanzas.</p>
+    </div>
+
+    <div class="nav-actions">
+      <div class="session-badge">
+        <span class="pulse-dot"></span>
+        <span class="email-text">{{ userEmail() }}</span>
+      </div>
+      <button mat-stroked-button color="warn" (click)="logout()" class="logout-btn">
+        <mat-icon>logout</mat-icon>
+        Cerrar Sesión
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Financial Grid (2x2 matching mockup) -->
+  <main class="dashboard-grid">
+    <!-- Card 1: Balance Total -->
+    <div class="dashboard-card balance-card">
+      <div class="card-title-row">
+        <span class="card-label">BALANCE TOTAL</span>
+        <button mat-icon-button class="more-btn">
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+      </div>
+
+      <div class="balance-display">
+        <span class="balance-value">{{ totalBalance }}</span>
+      </div>
+
+      <div class="trend-badge">
+        <mat-icon class="trend-icon">trending_up</mat-icon>
+        <span>{{ monthlyChange }}</span>
+      </div>
+
+      <div class="balance-actions">
+        <button mat-flat-button class="action-btn deposit-btn">
+          <mat-icon>add</mat-icon>
+          Depositar
+        </button>
+        <button mat-stroked-button class="action-btn transfer-btn">
+          <mat-icon>near_me</mat-icon>
+          Transferir
+        </button>
+      </div>
+    </div>
+
+    <!-- Card 2: Distribución de Activos -->
+    <div class="dashboard-card assets-card">
+      <div class="card-title-row">
+        <span class="card-heading">Distribución de Activos</span>
+      </div>
+
+      <div class="assets-list">
+        @for (asset of assets; track asset.name) {
+          <div class="asset-item">
+            <div class="asset-info-row">
+              <div class="asset-name-group">
+                <span class="asset-dot" [ngClass]="asset.colorClass"></span>
+                <span class="asset-name">{{ asset.name }}</span>
+              </div>
+              <span class="asset-percent">{{ asset.percentage }}%</span>
+            </div>
+            <div class="progress-track">
+              <div
+                class="progress-fill"
+                [ngClass]="asset.colorClass"
+                [style.width.%]="asset.percentage"
+              ></div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Card 3: Transacciones Recientes -->
+    <div class="dashboard-card transactions-card">
+      <div class="card-title-row">
+        <span class="card-heading">Transacciones Recientes</span>
+        <a href="javascript:void(0)" class="view-all-link">Ver todas</a>
+      </div>
+
+      <div class="transactions-list">
+        @for (tx of transactions; track tx.id) {
+          <div class="transaction-row">
+            <div class="tx-left">
+              <div class="tx-icon-box">
+                <mat-icon>{{ tx.icon }}</mat-icon>
+              </div>
+              <div class="tx-details">
+                <span class="tx-title">{{ tx.title }}</span>
+                <span class="tx-date">{{ tx.subtitle }}</span>
+              </div>
+            </div>
+            <div class="tx-right">
+              <span class="tx-amount" [class.positive]="tx.isPositive">
+                {{ tx.amount }}
+              </span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Card 4: Rendimiento Anual -->
+    <div class="dashboard-card chart-card">
+      <div class="card-title-row">
+        <span class="card-heading">Rendimiento Anual</span>
+      </div>
+
+      <div class="chart-container">
+        <svg viewBox="0 0 370 160" class="performance-svg" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="cyanGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#00bcd4" stop-opacity="0.45" />
+              <stop offset="60%" stop-color="#00bcd4" stop-opacity="0.12" />
+              <stop offset="100%" stop-color="#00bcd4" stop-opacity="0.0" />
+            </linearGradient>
+            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+
+          <!-- Filled Area under Curve -->
+          <path
+            d="M 0,130 Q 37,125 75,120 T 145,80 T 220,110 T 295,35 T 370,70 L 370,160 L 0,160 Z"
+            fill="url(#cyanGradient)"
+          />
+
+          <!-- Glowing Line -->
+          <path
+            d="M 0,130 Q 37,125 75,120 T 145,80 T 220,110 T 295,35 T 370,70"
+            fill="none"
+            stroke="#22d3ee"
+            stroke-width="3"
+            filter="url(#glow)"
+          />
+
+          <!-- Data Points -->
+          @for (point of chartPoints; track point.x) {
+            <circle
+              [attr.cx]="point.x"
+              [attr.cy]="point.y"
+              r="4.5"
+              fill="#060d18"
+              stroke="#22d3ee"
+              stroke-width="2.5"
+            />
+          }
+        </svg>
+      </div>
+    </div>
+  </main>
+</div>

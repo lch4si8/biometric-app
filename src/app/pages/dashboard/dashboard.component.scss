@@ -1,0 +1,388 @@
+.dashboard-page {
+  min-height: 100vh;
+  background-color: #060d18;
+  color: #ffffff;
+  padding: 2.5rem 3rem;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Top Bar */
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2.5rem;
+
+  .user-greeting {
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      margin: 0 0 0.4rem 0;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+
+      .accent-name {
+        color: #60a5fa;
+      }
+    }
+
+    .greeting-subtitle {
+      color: #8899aa;
+      font-size: 1rem;
+      margin: 0;
+    }
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .session-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.4rem 0.85rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: #94a3b8;
+
+      .pulse-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #00e5a0;
+        box-shadow: 0 0 8px #00e5a0;
+      }
+    }
+
+    .logout-btn {
+      border-radius: 20px;
+      font-size: 0.85rem;
+    }
+  }
+}
+
+/* Main Grid (2x2) */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  max-width: 1200px;
+}
+
+/* Card Base */
+.dashboard-card {
+  background-color: #0d1a2d;
+  border-radius: 20px;
+  padding: 1.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+
+  .card-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: #8899aa;
+    text-transform: uppercase;
+  }
+
+  .card-heading {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  .more-btn {
+    color: #8899aa;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+  }
+
+  .view-all-link {
+    color: #8899aa;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #60a5fa;
+      text-decoration: underline;
+    }
+  }
+}
+
+/* Card 1: Balance Card */
+.balance-card {
+  .balance-display {
+    margin-bottom: 0.75rem;
+
+    .balance-value {
+      font-size: 2.75rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -1px;
+    }
+  }
+
+  .trend-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(0, 229, 160, 0.12);
+    color: #00e5a0;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    width: fit-content;
+    margin-bottom: 2rem;
+
+    .trend-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .balance-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: auto;
+
+    .action-btn {
+      flex: 1;
+      height: 48px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    .deposit-btn {
+      background-color: #a5c4ff;
+      color: #060d18;
+      box-shadow: 0 4px 14px rgba(165, 196, 255, 0.3);
+
+      &:hover {
+        background-color: #bcd5ff;
+      }
+    }
+
+    .transfer-btn {
+      background-color: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+    }
+  }
+}
+
+/* Card 2: Assets Card */
+.assets-card {
+  .assets-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .asset-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .asset-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .asset-name-group {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+
+      .asset-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+
+        &.actions-bar {
+          background-color: #3b82f6;
+        }
+        &.crypto-bar {
+          background-color: #8b5cf6;
+        }
+        &.cash-bar {
+          background-color: #00e5a0;
+        }
+      }
+
+      .asset-name {
+        color: #d1d5db;
+        font-size: 0.95rem;
+        font-weight: 500;
+      }
+    }
+
+    .asset-percent {
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 6px;
+    background-color: #1a273b;
+    border-radius: 3px;
+    overflow: hidden;
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.6s ease;
+
+      &.actions-bar {
+        background-color: #3b82f6;
+      }
+      &.crypto-bar {
+        background-color: #8b5cf6;
+      }
+      &.cash-bar {
+        background-color: #00e5a0;
+      }
+    }
+  }
+}
+
+/* Card 3: Transactions Card */
+.transactions-card {
+  .transactions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    margin-top: 0.25rem;
+  }
+
+  .transaction-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .tx-left {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+
+    .tx-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      mat-icon {
+        color: #94a3b8;
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .tx-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+
+      .tx-title {
+        color: #ffffff;
+        font-size: 0.95rem;
+        font-weight: 500;
+      }
+
+      .tx-date {
+        color: #64748b;
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  .tx-right {
+    .tx-amount {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #ffffff;
+
+      &.positive {
+        color: #00e5a0;
+      }
+    }
+  }
+}
+
+/* Card 4: Performance Chart Card */
+.chart-card {
+  .chart-container {
+    width: 100%;
+    height: 180px;
+    margin-top: auto;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .performance-svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .dashboard-page {
+    padding: 1.5rem;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .top-nav {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+}

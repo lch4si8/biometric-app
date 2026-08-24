@@ -1,0 +1,50 @@
+<div class="camera-container">
+  <div class="viewport-wrapper">
+    <div class="video-panel" [class.hidden]="hasCaptured()">
+      <video #video autoplay playsinline muted></video>
+      <div class="target-overlay">
+        <div class="face-oval"></div>
+      </div>
+    </div>
+
+    <div class="canvas-panel" [class.visible]="hasCaptured()">
+      <canvas #canvas width="640" height="480"></canvas>
+    </div>
+
+    @if (isProcessing()) {
+      <div class="loading-overlay">
+        <mat-spinner diameter="48"></mat-spinner>
+        <span class="loading-text">Analizando biometría facial...</span>
+      </div>
+    }
+  </div>
+
+  <div class="status-bar" [class.error]="errorMessage()">
+    <mat-icon>{{ errorMessage() ? 'error_outline' : (hasCaptured() ? 'check_circle' : 'info') }}</mat-icon>
+    <span>{{ status() }}</span>
+  </div>
+
+  <div class="actions">
+    @if (!hasCaptured()) {
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="capture()"
+        [disabled]="!isCameraActive() || isProcessing()"
+      >
+        <mat-icon>camera</mat-icon>
+        Capturar Rostro
+      </button>
+    } @else {
+      <button
+        mat-stroked-button
+        color="accent"
+        (click)="retry()"
+        [disabled]="isProcessing()"
+      >
+        <mat-icon>refresh</mat-icon>
+        Reintentar Captura
+      </button>
+    }
+  </div>
+</div>

@@ -1,0 +1,79 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="card-header">
+      <div class="logo-badge">
+        <mat-icon>face</mat-icon>
+      </div>
+      <h1>Acceso Seguro</h1>
+      <p class="subtitle">Verificación Biométrica Facial + Multi-Factor</p>
+    </div>
+
+    @if (step() === 'email') {
+      <form [formGroup]="loginForm" (ngSubmit)="proceedToBiometric()" class="auth-form">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Correo Electrónico</mat-label>
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            placeholder="usuario@ejemplo.com"
+            autocomplete="email"
+          />
+          <mat-icon matSuffix>mail</mat-icon>
+          @if (loginForm.get('email')?.hasError('required')) {
+            <mat-error>El correo electrónico es obligatorio.</mat-error>
+          }
+          @if (loginForm.get('email')?.hasError('email')) {
+            <mat-error>Introduce un correo electrónico válido.</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="security-notice">
+          <mat-icon>lock</mat-icon>
+          <span>Acceso sin contraseña. Tu identidad será validada mediante similitud facial en el servidor y un código OTP.</span>
+        </div>
+
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          class="submit-btn"
+          [disabled]="loginForm.invalid"
+        >
+          Iniciar Verificación Facial
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </form>
+    } @else {
+      <div class="biometric-step">
+        <div class="step-nav">
+          <button mat-icon-button (click)="backToEmail()" class="back-btn" [disabled]="isSubmitting()">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+          <span class="user-badge">{{ loginForm.get('email')?.value }}</span>
+        </div>
+
+        <app-camera-capture (faceCaptured)="onFaceCaptured($event)"></app-camera-capture>
+
+        @if (isSubmitting()) {
+          <div class="submitting-state">
+            <mat-spinner diameter="32"></mat-spinner>
+            <span>Verificando similitud matemática en AWS Lambda...</span>
+          </div>
+        }
+      </div>
+    }
+
+    @if (errorMessage()) {
+      <div class="error-banner">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage() }}</span>
+      </div>
+    }
+
+    <div class="card-footer">
+      <span>¿No tienes una cuenta?</span>
+      <a routerLink="/register" class="link">Registrarte</a>
+    </div>
+  </div>
+</div>

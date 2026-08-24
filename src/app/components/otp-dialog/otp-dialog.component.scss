@@ -1,0 +1,124 @@
+.dialog-container {
+  background-color: #0d1a2d;
+  color: #f1f5f9;
+  padding: 1.5rem;
+  border-radius: 20px;
+  max-width: 440px;
+  box-sizing: border-box;
+}
+
+.dialog-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+
+  .icon-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(59, 130, 246, 0.15);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+
+    mat-icon {
+      color: #3b82f6;
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: #ffffff;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    margin: 0;
+    line-height: 1.4;
+
+    .user-email {
+      color: #38bdf8;
+      font-weight: 600;
+      display: block;
+      margin-top: 0.25rem;
+    }
+  }
+}
+
+.otp-inputs-grid {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+}
+
+.otp-digit {
+  width: 48px;
+  height: 56px;
+  border-radius: 12px;
+  background: #15243b;
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  outline: none;
+  transition: all 0.2s ease;
+
+  &:focus {
+    border-color: #3b82f6;
+    background: #1a2c47;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+  }
+}
+
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.otp-timer-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  color: #64748b;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.dialog-actions {
+  margin-top: 1.5rem;
+  padding: 0;
+  gap: 0.5rem;
+
+  button {
+    border-radius: 20px;
+    font-weight: 600;
+  }
+}

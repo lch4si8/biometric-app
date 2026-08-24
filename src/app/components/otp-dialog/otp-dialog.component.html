@@ -1,0 +1,56 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <div class="icon-circle">
+      <mat-icon>mail_lock</mat-icon>
+    </div>
+    <h2 mat-dialog-title>Verificación en Dos Pasos</h2>
+    <p class="subtitle">
+      Hemos enviado un código de seguridad de 6 dígitos a
+      <span class="user-email">{{ data.email }}</span>
+    </p>
+  </div>
+
+  <mat-dialog-content>
+    <form [formGroup]="otpForm" class="otp-inputs-grid" (paste)="onPaste($event)">
+      @for (d of digits; track d) {
+        <input
+          #digitInput
+          type="text"
+          inputmode="numeric"
+          maxlength="1"
+          autocomplete="one-time-code"
+          [formControlName]="'d' + d"
+          (input)="onInput(d, $event)"
+          (keydown)="onKeyDown(d, $event)"
+          class="otp-digit"
+        />
+      }
+    </form>
+
+    @if (errorMessage()) {
+      <div class="error-banner">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage() }}</span>
+      </div>
+    }
+
+    <div class="otp-timer-info">
+      <mat-icon>timer</mat-icon>
+      <span>El código expira en 2 minutos.</span>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="dialog-actions">
+    <button mat-button (click)="cancel()" [disabled]="isSubmitting()">
+      Cancelar
+    </button>
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="submit()"
+      [disabled]="otpForm.invalid || isSubmitting()"
+    >
+      Verificar Código
+    </button>
+  </mat-dialog-actions>
+</div>

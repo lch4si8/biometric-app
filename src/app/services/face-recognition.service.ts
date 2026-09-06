@@ -27,9 +27,20 @@ export class FaceRecognitionService {
 
     try {
       // Configurar backend a través del motor de TensorFlow.js
-      if ((faceapi as any).tf) {
-        await (faceapi as any).tf.ready();
-        console.log(`[FaceRecognitionService] Backend TensorFlow.js activo: ${(faceapi as any).tf.getBackend()}`);
+      const tf = (faceapi as any).tf;
+      if (tf) {
+        if (typeof tf.setWasmPaths === 'function') {
+          tf.setWasmPaths('/wasm/');
+        }
+
+        try {
+          await tf.setBackend('wasm');
+        } catch (error) {
+          console.warn('[FaceRecognitionService] No se pudo activar WASM, usando backend por defecto:', error);
+        }
+
+        await tf.ready();
+        console.log(`[FaceRecognitionService] Backend TensorFlow.js activo: ${tf.getBackend()}`);
       }
 
       // Cargar las redes neuronales de face-api (SSD MobileNet v1, Landmarks 68, ResNet-34)

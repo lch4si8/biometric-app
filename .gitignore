@@ -53,6 +53,8 @@ infrastructure/*.tfstate.backup
 
 # Lambda build artifacts
 backend/dist/
+backend/node_modules
+backend/layer/nodejs
 
 # IDE
 .vscode

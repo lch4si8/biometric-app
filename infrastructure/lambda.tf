@@ -8,6 +8,25 @@ data "archive_file" "lambda_zip" {
 }
 
 # ─────────────────────────────────────────────────────────────────
+# Empaquetado del Lambda Layer
+# ─────────────────────────────────────────────────────────────────
+data "archive_file" "lambda_layer_zip" {
+  type        = "zip"
+  source_dir  = "${path.module}/../backend/layer"
+  output_path = "${path.module}/../backend/dist/layer.zip"
+}
+
+resource "aws_lambda_layer_version" "dependencies" {
+  filename                 = data.archive_file.lambda_layer_zip.output_path
+  layer_name               = "biometric-dependencies-${var.environment}"
+  compatible_runtimes      = ["nodejs22.x"]
+  compatible_architectures = ["arm64"]
+  source_code_hash         = data.archive_file.lambda_layer_zip.output_base64sha256
+  description              = "Dependencias de produccion para Lambda"
+}
+
+
+# ─────────────────────────────────────────────────────────────────
 # IAM Role para las funciones Lambda
 # ─────────────────────────────────────────────────────────────────
 resource "aws_iam_role" "lambda_role" {
@@ -103,6 +122,7 @@ resource "aws_lambda_function" "register" {
   memory_size      = 256
   filename         = data.archive_file.lambda_zip.output_path
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+  layers           = [aws_lambda_layer_version.dependencies.arn]
 
   environment {
     variables = local.lambda_environment
@@ -127,6 +147,7 @@ resource "aws_lambda_function" "login" {
   memory_size      = 256
   filename         = data.archive_file.lambda_zip.output_path
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+  layers           = [aws_lambda_layer_version.dependencies.arn]
 
   environment {
     variables = local.lambda_environment
@@ -151,6 +172,7 @@ resource "aws_lambda_function" "verify_otp" {
   memory_size      = 256
   filename         = data.archive_file.lambda_zip.output_path
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+  layers           = [aws_lambda_layer_version.dependencies.arn]
 
   environment {
     variables = local.lambda_environment

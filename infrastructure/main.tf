@@ -8,17 +8,24 @@ terraform {
     }
     archive = {
       source  = "hashicorp/archive"
-      version = "~> 2.0"
+      version = "~> 2.2"
     }
   }
 
-  backend "local" {}
+  backend "s3" {
+    bucket         = "biometric-tfstate"
+    key            = "terraform.tfstate"
+    region         = "eu-west-1"
+    dynamodb_table = "tf-state-locking"
+    encrypt        = true
+  }
 }
 
 provider "aws" {
   region = var.aws_region
 
-  # ── Floci (desarrollo local) ──────────────────────────────────
+  # Floci (desarrollo local)
+  /*
   endpoints {
     dynamodb   = "http://localhost:4566"
     lambda     = "http://localhost:4566"
@@ -31,5 +38,5 @@ provider "aws" {
   secret_key                  = "test"
   skip_credentials_validation = true
   skip_metadata_api_check     = true
-  skip_requesting_account_id  = true
+  skip_requesting_account_id  = true*/
 }

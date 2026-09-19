@@ -65,11 +65,13 @@ resource "aws_iam_role_policy" "lambda_policy" {
         Action = [
           "dynamodb:PutItem",
           "dynamodb:GetItem",
-          "dynamodb:DeleteItem"
+          "dynamodb:DeleteItem",
+          "dynamodb:Scan"
         ]
         Resource = [
           aws_dynamodb_table.users.arn,
-          aws_dynamodb_table.otp_codes.arn
+          aws_dynamodb_table.otp_codes.arn,
+          aws_dynamodb_table.metrics.arn
         ]
       },
       {
@@ -96,12 +98,13 @@ resource "aws_iam_role_policy" "lambda_policy" {
 }
 
 # ─────────────────────────────────────────────────────────────────
-# Variables de entorno compartidas por las tres Lambdas
+# Variables de entorno compartidas por las Lambdas
 # ─────────────────────────────────────────────────────────────────
 locals {
   lambda_environment = {
     USERS_TABLE          = aws_dynamodb_table.users.name
     OTP_TABLE            = aws_dynamodb_table.otp_codes.name
+    METRICS_TABLE        = aws_dynamodb_table.metrics.name
     JWT_SECRET           = var.jwt_secret
     SIMILARITY_THRESHOLD = tostring(var.similarity_threshold)
     OTP_TTL_SECONDS      = tostring(var.otp_ttl_seconds)
@@ -183,3 +186,29 @@ resource "aws_lambda_function" "verify_otp" {
     Project     = "biometric-app"
   }
 }
+
+# ─────────────────────────────────────────────────────────────────
+# Lambda: biometric-metrics (GET & POST /metrics)
+# ─────────────────────────────────────────────────────────────────
+resource "aws_lambda_function" "metrics" {
+  function_name    = "biometric-metrics-${var.environment}"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "handlers/metrics.handler"
+  runtime          = "nodejs22.x"
+  architectures    = ["arm64"]
+  timeout          = 10
+  memory_size      = 256
+  filename         = data.archive_file.lambda_zip.output_path
+  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+  layers           = [aws_lambda_layer_version.dependencies.arn]
+
+  environment {
+    variables = local.lambda_environment
+  }
+
+  tags = {
+    Environment = var.environment
+    Project     = "biometric-app"
+  }
+}
+

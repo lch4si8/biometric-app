@@ -1,0 +1,159 @@
+<div class="metrics-page">
+  <!-- Header -->
+  <header class="metrics-header">
+    <div class="header-left">
+      <div class="logo-badge">
+        <mat-icon>analytics</mat-icon>
+      </div>
+      <div>
+        <h1>Métricas de Rendimiento</h1>
+        <p class="header-subtitle">Sistema de Autenticación Biométrica MFA</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <!-- Selector de Backend WASM vs CPU -->
+      <div class="backend-selector">
+        <span class="selector-label">Backend:</span>
+        <div class="pill-group">
+          <button type="button" class="backend-pill" [class.active]="selectedBackend() === 'wasm'"
+            (click)="setBackend('wasm')" [disabled]="running()">
+            <span>WASM</span>
+          </button>
+          <button type="button" class="backend-pill" [class.active]="selectedBackend() === 'cpu'"
+            (click)="setBackend('cpu')" [disabled]="running()">
+            <span>CPU</span>
+          </button>
+        </div>
+      </div>
+
+      <a routerLink="/login" class="nav-link">
+        <mat-icon>login</mat-icon>
+        Login
+      </a>
+
+      @if (running()) {
+      <button mat-flat-button class="run-btn" disabled>
+        <mat-spinner diameter="20" class="btn-spinner"></mat-spinner>
+        Ejecutando...
+      </button>
+      } @else {
+      <button mat-flat-button class="run-btn" (click)="runBenchmark()">
+        <mat-icon>play_arrow</mat-icon>
+        Ejecutar Benchmark
+      </button>
+      }
+    </div>
+  </header>
+
+  <!-- Progress Bar -->
+  @if (running()) {
+  <div class="progress-section">
+    <mat-progress-bar mode="determinate" [value]="progress()"></mat-progress-bar>
+    <div class="progress-info">
+      <span class="step-label">{{ currentStep() }}</span>
+      <span class="step-percent">{{ progress() }}%</span>
+    </div>
+  </div>
+  }
+
+  <!-- KPI Cards -->
+  <section class="kpi-row">
+    <!-- Card 1: Anti-Replay -->
+    <div class="kpi-card">
+      <span class="kpi-label">ANTI-REPLAY</span>
+      <span class="kpi-value accent-green">{{ kpiAntiReplay() }}</span>
+      <span class="kpi-desc">Replay Attacks Bloqueados</span>
+    </div>
+
+    <!-- Card 2: Aceleración WASM -->
+    <div class="kpi-card">
+      <span class="kpi-label">ACELERACIÓN WASM</span>
+      <span class="kpi-value accent-cyan">{{ kpiWasmSpeedup() }}</span>
+      <span class="kpi-desc">Speedup vs CPU Convencional</span>
+    </div>
+
+    <!-- Card 3: Latencia Total MFA -->
+    <div class="kpi-card">
+      <span class="kpi-label">LATENCIA TOTAL MFA</span>
+      <span class="kpi-value accent-purple">{{ kpiTotalMfa() }}</span>
+      <span class="kpi-desc">Biometría + OTP End-to-End</span>
+    </div>
+
+    <!-- Card 4: Latencia Login Biométrico -->
+    <div class="kpi-card">
+      <span class="kpi-label">LATENCIA LOGIN</span>
+      <span class="kpi-value accent-cyan">{{ kpiLatency() }}</span>
+      <span class="kpi-desc">POST /login Biométrico</span>
+    </div>
+
+    <!-- Card 5: Tasa de Detección -->
+    <div class="kpi-card">
+      <span class="kpi-label">DETECCIÓN</span>
+      <span class="kpi-value accent-green">{{ kpiDetection() }}</span>
+      <span class="kpi-desc">Tasa Aceptación SC≥0.8</span>
+    </div>
+
+    <!-- Card 6: Payload 128D -->
+    <div class="kpi-card">
+      <span class="kpi-label">PAYLOAD</span>
+      <span class="kpi-value accent-amber">{{ kpiPayload() }}</span>
+      <span class="kpi-desc">Vector 128D JSON</span>
+    </div>
+
+    <!-- Card 7: Umbral Similitud -->
+    <div class="kpi-card">
+      <span class="kpi-label">UMBRAL</span>
+      <span class="kpi-value accent-blue">{{ kpiThreshold() }}</span>
+      <span class="kpi-desc">Similitud Coseno</span>
+    </div>
+
+    <!-- Card 8: Duración Benchmark -->
+    <div class="kpi-card">
+      <span class="kpi-label">DURACIÓN</span>
+      <span class="kpi-value accent-cyan">{{ kpiTotalTime() }}</span>
+      <span class="kpi-desc">Benchmark Total</span>
+    </div>
+  </section>
+
+  <!-- Charts Grid (6 Gráficos Ordenados) -->
+  @if (hasResults()) {
+  <section class="charts-grid">
+    <!-- Fila 1: Distribución Similitud Coseno + Latencias por Fase -->
+    <div class="chart-card">
+      <canvas #histogramCanvas></canvas>
+    </div>
+    <div class="chart-card">
+      <canvas #latencyCanvas></canvas>
+    </div>
+
+    <!-- Fila 2: Evolución Temporal + Distribución HTTP -->
+    <div class="chart-card">
+      <canvas #latencyEvolutionCanvas></canvas>
+    </div>
+    <div class="chart-card">
+      <canvas #httpDistCanvas></canvas>
+    </div>
+
+    <!-- Fila 3: Curva DET (ROC) + Benchmark WASM vs CPU -->
+    <div class="chart-card">
+      <canvas #rocCanvas></canvas>
+    </div>
+    <div class="chart-card">
+      <canvas #wasmVsCpuCanvas></canvas>
+    </div>
+  </section>
+  } @else if (!running()) {
+  <div class="empty-state">
+    <mat-icon class="empty-icon">science</mat-icon>
+    <h2>Sin datos de benchmark</h2>
+    <p>Pulsa <strong>"Ejecutar Benchmark"</strong> para generar las métricas de rendimiento del sistema biométrico MFA.
+    </p>
+    <div class="empty-info">
+      <mat-icon>info</mat-icon>
+      <span>El benchmark ejecutará pruebas con backend <strong>{{ selectedBackend().toUpperCase() }}</strong>, validará
+        la protección Anti-Replay de DynamoDB, medirá el speedup WASM y persistirá los resultados en DynamoDB para
+        seguimiento histórico.</span>
+    </div>
+  </div>
+  }
+</div>

@@ -43,3 +43,24 @@ resource "aws_dynamodb_table" "otp_codes" {
     Project     = "biometric-app"
   }
 }
+
+# ─────────────────────────────────────────────────────────────────
+# Tabla: biometric-metrics
+# Almacena el historial de ejecuciones con las métricas estrictamente necesarias
+# ─────────────────────────────────────────────────────────────────
+resource "aws_dynamodb_table" "metrics" {
+  name         = "biometric-metrics-${var.environment}"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "id"
+
+  attribute {
+    name = "id"
+    type = "S"
+  }
+
+  tags = {
+    Environment = var.environment
+    Project     = "biometric-app"
+  }
+}
+

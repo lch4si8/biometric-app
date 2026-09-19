@@ -6,6 +6,44 @@
   padding: 1.5rem;
   background: radial-gradient(circle at top, #112038 0%, #060d18 100%);
   box-sizing: border-box;
+  position: relative;
+}
+
+.top-nav-bar {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 10;
+
+  .metrics-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    border-radius: 20px;
+    background: rgba(13, 26, 45, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      color: #8b5cf6;
+    }
+
+    &:hover {
+      color: #ffffff;
+      border-color: #8b5cf6;
+      background: rgba(139, 92, 246, 0.15);
+      box-shadow: 0 0 12px rgba(139, 92, 246, 0.25);
+    }
+  }
 }
 
 .auth-card {

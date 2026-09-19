@@ -24,6 +24,11 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'metrics',
+    loadComponent: () =>
+      import('./pages/metrics/metrics.component').then((m) => m.MetricsComponent),
+  },
+  {
     path: '**',
     redirectTo: 'login',
   },

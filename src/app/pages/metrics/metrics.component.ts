@@ -55,10 +55,10 @@ export class MetricsComponent implements OnInit, OnDestroy {
   // KPIs
   readonly kpiAntiReplay = signal('—');
   readonly kpiWasmSpeedup = signal('—');
+  readonly kpiInferenceTime = signal('—');
   readonly kpiTotalMfa = signal('—');
   readonly kpiLatency = signal('—');
   readonly kpiDetection = signal('—');
-  readonly kpiPayload = signal('—');
   readonly kpiThreshold = signal('0.80');
   readonly kpiTotalTime = signal('—');
 
@@ -99,10 +99,13 @@ export class MetricsComponent implements OnInit, OnDestroy {
     // Actualizar KPIs
     this.kpiAntiReplay.set(benchmarkResult.security.antiReplayRate + '%');
     this.kpiWasmSpeedup.set(benchmarkResult.client.wasmSpeedup.toFixed(1) + 'x');
+    const inferenceMs = this.selectedBackend() === 'wasm'
+      ? benchmarkResult.client.wasmAvgMs
+      : benchmarkResult.client.cpuAvgMs;
+    this.kpiInferenceTime.set(inferenceMs.toFixed(2) + ' ms');
     this.kpiTotalMfa.set(benchmarkResult.latency.totalMfaLatencyMs + ' ms');
     this.kpiLatency.set(benchmarkResult.latency.loginLatencyMs + ' ms');
     this.kpiDetection.set(benchmarkResult.biometric.detectionRate.toFixed(1) + '%');
-    this.kpiPayload.set((benchmarkResult.client.payloadSizeBytes / 1024).toFixed(1) + ' KB');
     this.kpiTotalTime.set((benchmarkResult.totalDurationMs / 1000).toFixed(1) + ' s');
 
     // Recargar historial para reflejar la persistencia en DynamoDB

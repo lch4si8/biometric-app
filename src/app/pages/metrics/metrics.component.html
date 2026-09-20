@@ -72,32 +72,32 @@
       <span class="kpi-desc">Speedup vs CPU Convencional</span>
     </div>
 
-    <!-- Card 3: Latencia Total MFA -->
+    <!-- Card 3: Tiempo de Inferencia -->
+    <div class="kpi-card">
+      <span class="kpi-label">TIEMPO INFERENCIA</span>
+      <span class="kpi-value accent-amber">{{ kpiInferenceTime() }}</span>
+      <span class="kpi-desc">Inferencia en Cliente (ms)</span>
+    </div>
+
+    <!-- Card 4: Latencia Total MFA -->
     <div class="kpi-card">
       <span class="kpi-label">LATENCIA TOTAL MFA</span>
       <span class="kpi-value accent-purple">{{ kpiTotalMfa() }}</span>
       <span class="kpi-desc">Biometría + OTP End-to-End</span>
     </div>
 
-    <!-- Card 4: Latencia Login Biométrico -->
+    <!-- Card 5: Latencia Login Biométrico -->
     <div class="kpi-card">
       <span class="kpi-label">LATENCIA LOGIN</span>
       <span class="kpi-value accent-cyan">{{ kpiLatency() }}</span>
       <span class="kpi-desc">POST /login Biométrico</span>
     </div>
 
-    <!-- Card 5: Tasa de Detección -->
+    <!-- Card 6: Tasa de Detección -->
     <div class="kpi-card">
       <span class="kpi-label">DETECCIÓN</span>
       <span class="kpi-value accent-green">{{ kpiDetection() }}</span>
       <span class="kpi-desc">Tasa Aceptación SC≥0.8</span>
-    </div>
-
-    <!-- Card 6: Payload 128D -->
-    <div class="kpi-card">
-      <span class="kpi-label">PAYLOAD</span>
-      <span class="kpi-value accent-amber">{{ kpiPayload() }}</span>
-      <span class="kpi-desc">Vector 128D JSON</span>
     </div>
 
     <!-- Card 7: Umbral Similitud -->
@@ -114,6 +114,7 @@
       <span class="kpi-desc">Benchmark Total</span>
     </div>
   </section>
+
 
   <!-- Charts Grid (6 Gráficos Ordenados) -->
   @if (hasResults()) {

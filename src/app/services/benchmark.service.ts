@@ -233,6 +233,9 @@ export class BenchmarkService {
     // MEDICIÓN WASM
     const wasmTimesMs: number[] = [];
     try {
+      if (typeof tf.setWasmPaths === 'function') {
+        tf.setWasmPaths('/wasm/');
+      }
       await tf.setBackend('wasm');
       await tf.ready();
 

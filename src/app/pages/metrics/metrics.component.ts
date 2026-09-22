@@ -510,7 +510,7 @@ export class MetricsComponent implements OnInit, OnDestroy {
         labels,
         datasets: [
           {
-            label: 'Float32Array (WASM-like)',
+            label: 'Float32Array (WASM)',
             data: wasmData,
             backgroundColor: 'rgba(34, 211, 238, 0.8)',
             borderColor: '#22d3ee',

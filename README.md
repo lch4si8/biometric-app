@@ -130,7 +130,7 @@ sequenceDiagram
     alt Código Válido
         L->>DB: DeleteItem (Prevención Replay Attack)
         L->>L: Firmar JWT (HS256, 1h)
-        L-->>C: 200 OK + Set-Cookie: token=JWT; HttpOnly; Secure; SameSite=Strict
+        L-->>C: 200 OK + Set-Cookie: token=JWT, HttpOnly, Secure, SameSite=Strict
         C->>U: Redirección automática a /dashboard
     else Código Inválido o Expirado
         L-->>C: 401 Unauthorized
